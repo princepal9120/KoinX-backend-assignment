@@ -1,8 +1,9 @@
-const express = require('express');
+import express from 'express';
+import { getCryptoStatsController, getCryptoDeviationController } from '../controllers/cryptoController.js';
+
 const router = express.Router();
-const cryptoController = require('../controllers/cryptoController');
 
-router.get('/stats', cryptoController.getStats);
-router.get('/deviation', cryptoController.getDeviation);
+router.get('/stats', getCryptoStatsController);
+router.get('/deviation', getCryptoDeviationController);
 
-module.exports = router;
+export default router;

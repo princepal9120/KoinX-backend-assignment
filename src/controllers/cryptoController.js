@@ -1,22 +1,28 @@
-const cryptoService = require('../services/cryptoService');
+import { getCryptoStats, getCryptoDeviation } from '../services/cryptoService.js';
 
-exports.getStats = async (req, res) => {
+export const getCryptoStatsController = async (req, res) => {
+  const { coin } = req.query;
   try {
-    const { coin } = req.query;
-    const stats = await cryptoService.getLatestStats(coin);
-    cosole.log(stats);
-        res.json(stats);
+    const stats = await getCryptoStats(coin);
+    if (!stats) {
+      return res.status(404).json({ error: 'Data not found' });
+    }
+    res.json(stats);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 
-exports.getDeviation = async (req, res) => {
+export const getCryptoDeviationController = async (req, res) => {
+  const { coin } = req.query;
+  if (!coin) {
+    return res.status(400).json({ error: 'Enter valid coin name' });
+  }
   try {
-    const { coin } = req.query;
-    const deviation = await cryptoService.getStandardDeviation(coin);
-    res.json({ deviation });
+    const deviation = await getCryptoDeviation(coin);
+    res.json({ deviation: deviation.toFixed(2) });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };

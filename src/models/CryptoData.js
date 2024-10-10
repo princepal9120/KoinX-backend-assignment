@@ -1,26 +1,15 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-const CryptoDataSchema = new mongoose.Schema({
-  coin: {
-    type: String,
-    required: true,
-  },
-  price: {
-    type: Number,
-    required: true,
-  },
-  marketCap: {
-    type: Number,
-    required: true,
-  },
-  change24h: {
-    type: Number,
-    required: true,
-  },
-  timestamp: {
-    type: Date,
-    default: Date.now,
-  },
+
+
+const cryptoSchema = new mongoose.Schema({
+  name: String,
+  symbol: String,
+  price: Number,
+  market_cap: Number,
+  change_24h: Number,
+  timestamp: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('CryptoData', CryptoDataSchema);
+const Crypto = mongoose.model('Crypto', cryptoSchema);
+export  default Crypto;

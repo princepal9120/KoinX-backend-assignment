@@ -1,27 +1,30 @@
-require('dotenv').config();
-const express = require('express');
-const connectDB = require('./config/database');
-const cryptoRoutes = require('./routes/cryptoRoutes');
-const fetchCryptoData = require('./jobs/fetchCryptoData');
+import express from "express";
+import cron from "node-cron";
+
+import connectDatabase from "./config/database.js";
+import { updateCryptoData } from "./services/cryptoService.js";
+import cryptoRoutes from "./routes/cryptoRoutes.js";
+import homeRoutes from "./routes/homeRoutes.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Connect to MongoDB
-connectDB();
+connectDatabase();
 
-// Middleware
-app.use(express.json());
+updateCryptoData().catch((error) => {
+  console.error("Error during initial fetch:", error);
+});
 
-// Routes
-app.use('/api', cryptoRoutes);
+cron.schedule("0 */2 * * *", async () => {
+  console.log("Fetching crypto data:");
+  await updateCryptoData();
+});
 
-// Start the background job
-fetchCryptoData.start();
-app.use('/',()=>{
-    console.log("hello")
-})
+app.use("/", homeRoutes);
+app.use("/api", cryptoRoutes);
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
