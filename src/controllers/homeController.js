@@ -64,9 +64,9 @@ export const getHomePage = async (req, res) => {
       </head>
       <body>
           <div class="container">
-              <h1>Welcome to the Crypto Price & Deviation API/h1>
+              <h1>Welcome to the Crypto Price & Deviation API</h1>
               <p>This API provides real-time cryptocurrency prices and calculates the standard deviation of historical data, offering insights into market volatility.</p>
-              <p>For more details, explore the <a href="https://github.com/princepal9120/">GitHub repository</a>.</p>
+              <p>For more details, explore the <a href="https://github.com/princepal9120/KoinX-backend-assignment">GitHub repository</a>.</p>
               <a class="cta-btn" href="https://github.com/princepal9120/KoinX-backend-assignment">Check Out on GitHub</a>
           </div>
       </body>
